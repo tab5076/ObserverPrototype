@@ -51,6 +51,7 @@ function init() {
 
 function renderObservers() {
     observerListEl.innerHTML = "";
+    
     observers.forEach(obs => {
         const li = document.createElement("li");
         const isActive = obs.id === selectedObserverId;
@@ -110,7 +111,8 @@ function renderObservees() {
     // Group the valid users, filter, and sort them alphabetically
     const observees = observeeIds
         .map(userId => allUsers.find(u => u.id === userId))
-        .filter(user => user && (user.name.toLowerCase().includes(filterQuery) || (user.id + '@abc.edu').toLowerCase().includes(filterQuery)))
+        .filter(user => user && 
+            (user.name.toLowerCase().includes(filterQuery) || (user.id + '@abc.edu').toLowerCase().includes(filterQuery)))
         .sort((a, b) => a.name.localeCompare(b.name));
 
     if (observees.length === 0 && filterQuery) {
