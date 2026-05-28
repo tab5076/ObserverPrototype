@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observer Assignments</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Observer/Observee Management Prototype</h1>
+    </header>
+    <div class="container">
+        <!-- Left Side: Observers List -->
+        <aside class="left-panel">
+            <h2>Course Observers</h2>
+            <ul id="observer-list" class="list-group">
+                <!-- Populated via JS -->
+            </ul>
+        </aside>
+
+        <!-- Right Side: Search and Observees List -->
+        <main class="right-panel">
+            <div id="assignment-section" class="hidden">
+                <div class="top-section">
+                    <h2>Assign to: <span id="selected-observer-name">None</span></h2>
+                    <div class="search-container">
+                        <input type="text" id="user-search" placeholder="Search users to assign..." aria-label="Search users to assign">
+                        <button id="btn-search">Search</button>
+                    </div>
+                    <ul id="search-results" class="list-group search-results" aria-live="polite">
+                        <!-- Search results go here -->
+                    </ul>
+                </div>
+                
+                <div class="bottom-section">
+                    <h3>Current Observees</h3>
+                    <div class="search-container" style="margin-top: 10px;">
+                        <input type="text" id="filter-observees" placeholder="Filter current observees..." aria-label="Filter current observees">
+                    </div>
+                    <ul id="observee-list" class="list-group" aria-live="polite">
+                        <!-- Populated via JS -->
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="no-selection-message" aria-live="polite">
+                <p>Please select an observer from the left panel to manage assignments.</p>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
