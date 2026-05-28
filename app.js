@@ -110,7 +110,7 @@ function renderObservees() {
     // Group the valid users, filter, and sort them alphabetically
     const observees = observeeIds
         .map(userId => allUsers.find(u => u.id === userId))
-        .filter(user => user && user.name.toLowerCase().includes(filterQuery))
+        .filter(user => user && (user.name.toLowerCase().includes(filterQuery) || (user.id + '@abc.edu').toLowerCase().includes(filterQuery)))
         .sort((a, b) => a.name.localeCompare(b.name));
 
     if (observees.length === 0 && filterQuery) {
@@ -139,7 +139,7 @@ function handleSearch() {
     
     // Find users matching query who are NOT already assigned to the selected observer
     const results = allUsers.filter(u => 
-        u.name.toLowerCase().includes(query) && 
+        (u.name.toLowerCase().includes(query) || (u.id + '@abc.edu').toLowerCase().includes(query)) && 
         !currentObservees.includes(u.id)
     );
 
