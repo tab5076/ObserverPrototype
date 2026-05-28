@@ -22,10 +22,14 @@
         <!-- Right Side: Search and Observees List -->
         <main class="right-panel">
             <div id="assignment-section" class="hidden">
+                <p style="margin-top: 0; margin-bottom: 1.5rem; color: var(--text-secondary); line-height: 1.5;">
+                    When an observer is linked to a student, they have access to that student's grades and course interactions.<br>
+                    To link the course observer <strong id="blurb-observer-name">the selected observer</strong> to a student, search for the student's name below and then click Link.
+                </p>
                 <div class="top-section">
-                    <h2>Assign to: <span id="selected-observer-name">None</span></h2>
+                    <h2>Link to: <span id="selected-observer-name">None</span></h2>
                     <div class="search-container">
-                        <input type="text" id="user-search" placeholder="Search users to assign..." aria-label="Search users to assign">
+                        <input type="text" id="user-search" placeholder="Search users to link..." aria-label="Search users to link">
                         <button id="btn-search">Search</button>
                     </div>
                     <ul id="search-results" class="list-group search-results" aria-live="polite">
@@ -33,10 +37,10 @@
                     </ul>
                 </div>
                 
-                <div class="bottom-section">
-                    <h3>Current Observees</h3>
+                <div class="bottom-section" style="margin-top: 2rem; border-top: 2px solid var(--border-color); padding-top: 2rem;">
+                    <h3>Linked Students</h3>
                     <div class="search-container" style="margin-top: 10px;">
-                        <input type="text" id="filter-observees" placeholder="Filter current observees..." aria-label="Filter current observees">
+                        <input type="text" id="filter-observees" placeholder="Filter linked students..." aria-label="Filter linked students">
                     </div>
                     <ul id="observee-list" class="list-group" aria-live="polite">
                         <!-- Populated via JS -->

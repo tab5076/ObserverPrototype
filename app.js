@@ -1,8 +1,8 @@
 // Mock Data
 const observers = [
-    { id: 1, name: "Dr. Alice Smith", role: "Observer" },
-    { id: 2, name: "John Doe", role: "Observer" },
-    { id: 3, name: "Dr. Bob Johnson", role: "Observer" }
+    { id: "Alice", name: "Dr. Alice Smith", role: "Observer" },
+    { id: "John", name: "John Doe", role: "Observer" },
+    { id: "Bob", name: "Dr. Bob Johnson", role: "Observer" }
 ];
 
 const allUsers = [
@@ -16,9 +16,9 @@ const allUsers = [
 // State
 let selectedObserverId = null;
 const observerAssignments = {
-    1: [101, 102], // Alice is observing Student A and B
-    2: [103],      // John is observing Student C
-    3: []          // Bob has no observees
+    "Alice": [101, 102], // Alice is observing Student A and B
+    "John": [103],      // John is observing Student C
+    "Bob": []          // Bob has no observees
 };
 
 // DOM Elements
@@ -26,6 +26,7 @@ const observerListEl = document.getElementById("observer-list");
 const assignmentSection = document.getElementById("assignment-section");
 const noSelectionMessage = document.getElementById("no-selection-message");
 const selectedObserverNameEl = document.getElementById("selected-observer-name");
+const blurbObserverNameEl = document.getElementById("blurb-observer-name");
 const observeeListEl = document.getElementById("observee-list");
 const userSearchInput = document.getElementById("user-search");
 const btnSearch = document.getElementById("btn-search");
@@ -60,6 +61,7 @@ function renderObservers() {
         li.innerHTML = `
             <div>
                 <strong>${obs.name}</strong><br>
+                <small class="user-id" style="color: var(--text-secondary); font-size: 0.85em;">${obs.id}@abc.edu</small>
             </div>
         `;
         li.addEventListener("click", () => selectObserver(obs.id));
@@ -84,6 +86,7 @@ function selectObserver(id) {
     assignmentSection.classList.remove("hidden");
     
     selectedObserverNameEl.textContent = observer.name;
+    if (blurbObserverNameEl) blurbObserverNameEl.textContent = observer.name;
     
     // Clear search and filters
     userSearchInput.value = "";
@@ -118,8 +121,11 @@ function renderObservees() {
     observees.forEach(user => {
         const li = document.createElement("li");
         li.innerHTML = `
-            <span>${user.name}</span>
-            <button class="btn-remove" aria-label="Remove ${user.name}" onclick="removeObservee(${user.id})">Remove</button>
+            <div>
+                <span>${user.name}</span><br>
+                <small class="user-id" style="color: var(--text-secondary); font-size: 0.85em;">${user.id}@abc.edu</small>
+            </div>
+            <button class="btn-remove" aria-label="Unlink ${user.name}" onclick="removeObservee(${user.id})">Unlink</button>
         `;
         observeeListEl.appendChild(li);
     });
@@ -151,8 +157,11 @@ function renderSearchResults(results) {
     results.forEach(user => {
         const li = document.createElement("li");
         li.innerHTML = `
-            <span>${user.name}</span>
-            <button class="btn-assign" aria-label="Assign ${user.name}" onclick="assignObservee(${user.id})">Assign</button>
+            <div>
+                <span>${user.name}</span><br>
+                <small class="user-id" style="color: var(--text-secondary); font-size: 0.85em;">${user.id}@abc.edu</small>
+            </div>
+            <button class="btn-assign" aria-label="Link ${user.name}" onclick="assignObservee(${user.id})">Link</button>
         `;
         searchResultsEl.appendChild(li);
     });
