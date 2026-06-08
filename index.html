@@ -42,6 +42,7 @@
                     <div class="search-container" style="margin-top: 10px;">
                         <input type="text" id="filter-observees" placeholder="Filter linked students..." aria-label="Filter linked students">
                     </div>
+                    <button id="btn-remove-all-observees" class="btn-remove btn-remove-all" type="button" aria-label="Remove all linked students for selected observer">Remove All Linked Students</button>
                     <ul id="observee-list" class="list-group" aria-live="polite">
                         <!-- Populated via JS -->
                     </ul>
@@ -50,6 +51,17 @@
             
             <div id="no-selection-message" aria-live="polite">
                 <p>Please select an observer from the left panel to manage assignments.</p>
+            </div>
+
+            <div id="bulk-unlink-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="bulk-unlink-title">
+                <div class="modal-card">
+                    <h3 id="bulk-unlink-title">Confirm Unlink All Students</h3>
+                    <p id="bulk-unlink-message" class="modal-message"></p>
+                    <div class="modal-actions">
+                        <button id="btn-cancel-bulk-unlink" class="btn-modal-cancel" type="button">Cancel</button>
+                        <button id="btn-confirm-bulk-unlink" class="btn-remove" type="button">Unlink All</button>
+                    </div>
+                </div>
             </div>
         </main>
     </div>

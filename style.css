@@ -64,6 +64,7 @@ header h1 {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 h2, h3 {
@@ -198,6 +199,64 @@ h3 { font-size: 1.15rem; }
     background-color: #b71c1c;
     box-shadow: var(--elevation-2);
 }
+
+.btn-remove-all {
+    margin-top: 2px;
+    margin-bottom: 12px;
+    width: 100%;
+    padding: 8px 16px;
+}
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 22, 30, 0.55);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 20;
+}
+
+.modal-card {
+    width: min(460px, 100%);
+    background: linear-gradient(160deg, #ffffff 0%, #f8f5ff 100%);
+    border: 1px solid rgba(98, 0, 234, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+    padding: 1.25rem;
+}
+
+.modal-message {
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin-bottom: 1.1rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+}
+
+.btn-modal-cancel {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: #ffffff;
+    color: var(--text-primary);
+    padding: 6px 14px;
+    cursor: pointer;
+}
+
+.btn-modal-cancel:hover {
+    background: #f3f3f3;
+}
+
 .list-group li:focus-visible {
     outline: 2px solid var(--primary-color);
     outline-offset: -2px;
@@ -205,7 +264,8 @@ h3 { font-size: 1.15rem; }
 
 .search-container button:focus-visible, 
 .btn-assign:focus-visible, 
-.btn-remove:focus-visible {
+.btn-remove:focus-visible,
+.btn-modal-cancel:focus-visible {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }

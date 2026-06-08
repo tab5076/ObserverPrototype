@@ -15,6 +15,7 @@ const allUsers = [
 
 // State
 let selectedObserverId = null;
+let pendingBulkUnlinkContext = null;
 const observerAssignments = {
     "Alice": [101, 102], // Alice is observing Student A and B
     "John": [103],      // John is observing Student C
@@ -32,26 +33,88 @@ const userSearchInput = document.getElementById("user-search");
 const btnSearch = document.getElementById("btn-search");
 const searchResultsEl = document.getElementById("search-results");
 const filterObserveesInput = document.getElementById("filter-observees");
+const btnRemoveAllObservees = document.getElementById("btn-remove-all-observees");
+const bulkUnlinkModalEl = document.getElementById("bulk-unlink-modal");
+const bulkUnlinkMessageEl = document.getElementById("bulk-unlink-message");
+const btnCancelBulkUnlink = document.getElementById("btn-cancel-bulk-unlink");
+const btnConfirmBulkUnlink = document.getElementById("btn-confirm-bulk-unlink");
 
 // Initialize
 function init() {
     renderObservers();
-    
+
     // Bind search event
     btnSearch.addEventListener("click", handleSearch);
     userSearchInput.addEventListener("keyup", (e) => {
-        if(e.key === "Enter") handleSearch();
+        if (e.key === "Enter") handleSearch();
     });
-    
+
     // Bind filter event for current observees
     filterObserveesInput.addEventListener("keyup", () => {
         renderObservees();
     });
+
+    btnRemoveAllObservees.addEventListener("click", () => {
+        if (!selectedObserverId) return;
+
+        const linkedCount = (observerAssignments[selectedObserverId] || []).length;
+        if (linkedCount === 0) return;
+
+        const selectedObserver = observers.find(o => o.id === selectedObserverId);
+        const observerName = selectedObserver ? selectedObserver.name : "this observer";
+        openBulkUnlinkModal({
+            observerId: selectedObserverId,
+            observerName,
+            linkedCount
+        });
+    });
+
+    btnCancelBulkUnlink.addEventListener("click", closeBulkUnlinkModal);
+    btnConfirmBulkUnlink.addEventListener("click", confirmBulkUnlink);
+    bulkUnlinkModalEl.addEventListener("click", (e) => {
+        if (e.target === bulkUnlinkModalEl) {
+            closeBulkUnlinkModal();
+        }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !bulkUnlinkModalEl.classList.contains("hidden")) {
+            closeBulkUnlinkModal();
+        }
+    });
+}
+
+function openBulkUnlinkModal(context) {
+    pendingBulkUnlinkContext = context;
+    bulkUnlinkMessageEl.textContent = `You are about to unlink all ${context.linkedCount} student(s) from ${context.observerName}. This action cannot be undone.`;
+    bulkUnlinkModalEl.classList.remove("hidden");
+    btnConfirmBulkUnlink.focus();
+}
+
+function closeBulkUnlinkModal() {
+    pendingBulkUnlinkContext = null;
+    bulkUnlinkModalEl.classList.add("hidden");
+    btnRemoveAllObservees.focus();
+}
+
+function confirmBulkUnlink() {
+    if (!pendingBulkUnlinkContext) return;
+
+    const { observerId } = pendingBulkUnlinkContext;
+    observerAssignments[observerId] = [];
+
+    closeBulkUnlinkModal();
+    if (observerId === selectedObserverId) {
+        renderObservees();
+        if (userSearchInput.value) {
+            handleSearch();
+        }
+    }
 }
 
 function renderObservers() {
     observerListEl.innerHTML = "";
-    
+
     observers.forEach(obs => {
         const li = document.createElement("li");
         const isActive = obs.id === selectedObserverId;
@@ -79,28 +142,29 @@ function renderObservers() {
 function selectObserver(id) {
     selectedObserverId = id;
     const observer = observers.find(o => o.id === id);
-    
+
     renderObservers(); // Update active class
-    
+
     // Show right panel content
     noSelectionMessage.classList.add("hidden");
     assignmentSection.classList.remove("hidden");
-    
+
     selectedObserverNameEl.textContent = observer.name;
     if (blurbObserverNameEl) blurbObserverNameEl.textContent = observer.name;
-    
+
     // Clear search and filters
     userSearchInput.value = "";
     searchResultsEl.innerHTML = "";
     filterObserveesInput.value = "";
-    
+
     renderObservees();
 }
 
 function renderObservees() {
     observeeListEl.innerHTML = "";
     const observeeIds = observerAssignments[selectedObserverId] || [];
-    
+    btnRemoveAllObservees.classList.toggle("hidden", observeeIds.length === 0);
+
     if (observeeIds.length === 0) {
         observeeListEl.innerHTML = "<li><em>No observees assigned.</em></li>";
         return;
@@ -111,7 +175,7 @@ function renderObservees() {
     // Group the valid users, filter, and sort them alphabetically
     const observees = observeeIds
         .map(userId => allUsers.find(u => u.id === userId))
-        .filter(user => user && 
+        .filter(user => user &&
             (user.name.toLowerCase().includes(filterQuery) || (user.id + '@abc.edu').toLowerCase().includes(filterQuery)))
         .sort((a, b) => a.name.localeCompare(b.name));
 
@@ -138,10 +202,10 @@ function handleSearch() {
     if (!query) return;
 
     const currentObservees = observerAssignments[selectedObserverId] || [];
-    
+
     // Find users matching query who are NOT already assigned to the selected observer
-    const results = allUsers.filter(u => 
-        (u.name.toLowerCase().includes(query) || (u.id + '@abc.edu').toLowerCase().includes(query)) && 
+    const results = allUsers.filter(u =>
+        (u.name.toLowerCase().includes(query) || (u.id + '@abc.edu').toLowerCase().includes(query)) &&
         !currentObservees.includes(u.id)
     );
 
@@ -150,7 +214,7 @@ function handleSearch() {
 
 function renderSearchResults(results) {
     searchResultsEl.innerHTML = "";
-    
+
     if (results.length === 0) {
         searchResultsEl.innerHTML = "<li><em>No matching users found or all matches are already assigned.</em></li>";
         return;
@@ -175,14 +239,14 @@ window.assignObservee = function(userId) {
         observerAssignments[selectedObserverId] = [];
     }
     observerAssignments[selectedObserverId].push(userId);
-    
+
     renderObservees();
     handleSearch(); // Refresh search list to remove the newly assigned user
 };
 
 window.removeObservee = function(userId) {
     observerAssignments[selectedObserverId] = observerAssignments[selectedObserverId].filter(id => id !== userId);
-    
+
     renderObservees();
     if (userSearchInput.value) {
         handleSearch(); // Refresh search list to add back the removed user if they match the current search
