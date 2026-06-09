@@ -38,6 +38,94 @@ header h1 {
     letter-spacing: 0.0125em;
 }
 
+/* Developer Notes Section */
+.developer-notes-banner {
+    background-color: #e8f5e9;
+    border-left: 4px solid #4caf50;
+    margin: 0;
+    padding: 0;
+}
+
+.dev-notes-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2e7d32;
+    transition: background-color 0.2s;
+}
+
+.dev-notes-toggle:hover {
+    background-color: rgba(76, 175, 80, 0.08);
+}
+
+.dev-notes-icon {
+    font-size: 1.25rem;
+}
+
+.dev-notes-title {
+    flex: 1;
+    text-align: left;
+}
+
+.dev-notes-arrow {
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+}
+
+.dev-notes-toggle[aria-expanded="true"] .dev-notes-arrow {
+    transform: rotate(180deg);
+}
+
+.dev-notes-content {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    animation: slideDown 0.3s ease;
+}
+
+.dev-notes-content.hidden {
+    display: none;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dev-notes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.95rem;
+    color: #1b5e20;
+}
+
+.dev-notes-list li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.dev-notes-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
 .container {
     display: flex;
     max-width: 1200px;

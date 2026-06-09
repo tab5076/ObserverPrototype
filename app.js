@@ -39,8 +39,23 @@ const bulkUnlinkMessageEl = document.getElementById("bulk-unlink-message");
 const btnCancelBulkUnlink = document.getElementById("btn-cancel-bulk-unlink");
 const btnConfirmBulkUnlink = document.getElementById("btn-confirm-bulk-unlink");
 
+// Developer Notes Toggle
+function initDevNotes() {
+    const toggleBtn = document.getElementById("toggle-dev-notes");
+    const devNotesContent = document.getElementById("dev-notes-content");
+    
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", () => {
+            const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
+            toggleBtn.setAttribute("aria-expanded", !isExpanded);
+            devNotesContent.classList.toggle("hidden");
+        });
+    }
+}
+
 // Initialize
 function init() {
+    initDevNotes();
     renderObservers();
 
     // Bind search event

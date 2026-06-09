@@ -10,6 +10,23 @@
     <header>
         <h1>Observer/Observee Management Prototype</h1>
     </header>
+    
+    <!-- Developer Notes Section -->
+    <div class="developer-notes-banner">
+        <button id="toggle-dev-notes" class="dev-notes-toggle" aria-expanded="false" aria-controls="dev-notes-content">
+            <span class="dev-notes-icon">📝</span>
+            <span class="dev-notes-title">Developer Notes</span>
+            <span class="dev-notes-arrow">▼</span>
+        </button>
+        <div id="dev-notes-content" class="dev-notes-content hidden" role="region" aria-labelledby="toggle-dev-notes">
+            <ul class="dev-notes-list">
+                <li>Student search only searches the current course</li>
+                <li>Linking a student to an observer creates a new ObserverEnrollment for the observer with the student as the associated_user</li>
+                <li>Unlinking a student from an observer deletes the corresponding ObserverEnrollment</li>
+            </ul>
+        </div>
+    </div>
+    
     <div class="container">
         <!-- Left Side: Observers List -->
         <aside class="left-panel">
